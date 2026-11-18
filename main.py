@@ -6,7 +6,7 @@ import twriter
 import os
 
 
-START_ROW = 9
+START_ROW = 7
 BLANK_ROW = 2
 
 
@@ -35,5 +35,11 @@ if __name__ == "__main__":
             twriter.insert_img(ws, "D2", 0.4, 0.25)
             twriter.type_basic_info(ws, format, project, client, city)
         twriter.add_table(ws2, START_ROW, 0, df_parts, format, True)
+        current_row = START_ROW
+        for assembly in df_assemblies_list:
+            key = list(assembly.keys())
+            current_row = twriter.add_main_assembly_row(ws1, assembly[key[0]], current_row, 0, key[0], format)
+            current_row = twriter.add_table(ws1, current_row, 0, assembly[key[0]], format, False)
+            current_row += BLANK_ROW
     finally:
         wb.close()

@@ -75,7 +75,7 @@ def parts_sort(df):
     df = df[~df["Filename"].isin(REMOVE_PARTS)]
     df.sort_values(by= "Filename", inplace = True)
     df["Item"] = range(1, len(df) + 1)
-    df.set_index("Item", inplace = True)
+    #df.set_index("Item", inplace = True)
     return df
 
 
@@ -102,18 +102,3 @@ def assemblies_hierarchy(df):
 #Drop unnecesary columns
 def drop_col(df):
     df.drop(columns = "Part Number", inplace = True)
-
-#execute
-if __name__ == "__main__":
-    df_parts, df_assemblies = read_excel_files()
-    df_lists = [df_parts, df_assemblies]
-    for ind, df in enumerate(df_lists):
-        fix_beam_filenames(df)
-        checks_columns(df)
-        varies_alert(df)
-        df_lists[ind] = sorting_columns(df)
-    df_parts = parts_sort(df_lists[0])
-    df_assemblies_list = assemblies_hierarchy(df_lists[1])
-    for dic in df_assemblies_list:
-        print(f"\n{dic.keys()}")
-        print(f"{dic.values()}\n")

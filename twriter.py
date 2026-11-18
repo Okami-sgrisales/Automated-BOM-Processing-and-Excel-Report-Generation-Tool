@@ -160,3 +160,11 @@ def add_table(ws, start_row, start_col, df, formats, index):
     df = df.replace([np.nan, np.inf, -np.inf], None)
     for row, values in enumerate(df.itertuples(index = index, name = None)):
         ws.write_row(start_row + row + 1, start_col, values, formats["cell"])
+    start_row += rows + 1
+    return start_row
+
+def add_main_assembly_row(ws, df, row, start_col, data, formats):
+    cols = df.shape[1]
+    ws.merge_range(row, start_col, row, start_col+cols-1, data, formats["header_table"])
+    row += 1
+    return row
