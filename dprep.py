@@ -22,11 +22,11 @@ def read_excel_files():
     while True:
         try:
             folder = input("Escribe el nombre de la carpeta con los archivos: ").lower()
-            folder_list = os.listdir("./Listas/")
+            folder_list = os.listdir("./input/")
             for item in folder_list:
                 if item.lower() == folder:
                     folder = item
-            file_path = f"./Listas/{folder}" 
+            file_path = f"./input/{folder}" 
             parts_list = pd.read_excel(f"{file_path}/{PARTS_NAME}")
             assemblies_list = pd.read_excel(f"{file_path}/{ASSEMBLIES_NAME}")
             break
