@@ -22,9 +22,11 @@ def create_workbook():
     workbook  = writer.book
     workbook.add_worksheet("Lista de Ensamblajes")
     workbook.add_worksheet("Lista de Partes(Total)")
+    workbook.add_worksheet("Lista de Tornilleria(Total)")
     worksheet1 = writer.sheets["Lista de Ensamblajes"]
     worksheet2 = writer.sheets["Lista de Partes(Total)"]
-    return workbook, worksheet1, worksheet2, writer
+    worksheet3 = writer.sheets["Lista de Tornilleria(Total)"]
+    return workbook, worksheet1, worksheet2, worksheet3, writer
 
 
 def format(workbook):

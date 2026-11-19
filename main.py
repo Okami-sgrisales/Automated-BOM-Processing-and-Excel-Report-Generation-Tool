@@ -19,22 +19,24 @@ if __name__ == "__main__":
         dprep.varies_alert(df)
         df_lists[ind] = dprep.sorting_columns(df)
     df_parts = dprep.parts_sort(df_lists[0])
+    df_bolts = dprep.bolts(df_parts)
     df_assemblies_list = dprep.assemblies_hierarchy(df_lists[1])
 
     
     out_folder = "output"
     os.makedirs(out_folder, exist_ok = True)
     project, client, city = twriter.get_project()
-    wb, ws1, ws2, writer = twriter.create_workbook()
+    wb, ws1, ws2, ws3, writer = twriter.create_workbook()
     try:
-        wsl = [ws1, ws2]
+        wsl = [ws1, ws2, ws3]
         for ws in wsl:
             format = twriter.format(wb)
             twriter.apply_border(wb, ws, 1, 4, 1, 3)
             twriter.column_width(ws, 44, 35, 20, 20, 12)
             twriter.insert_img(ws, "D2", 0.4, 0.25)
             twriter.type_basic_info(ws, format, project, client, city)
-        twriter.add_table(ws2, START_ROW, 0, df_parts, format, True)
+        twriter.add_table(ws2, START_ROW, 0, df_parts, format, False)
+        twriter.add_table(ws3, START_ROW, 0, df_bolts, format, False)
         current_row = START_ROW
         for assembly in df_assemblies_list:
             key = list(assembly.keys())

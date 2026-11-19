@@ -99,6 +99,7 @@ def assemblies_hierarchy(df):
         assemblies_list.append({assembly_name : assembly_item[FINAL_COL].iloc[1:].copy()})
     return assemblies_list
 
-#Drop unnecesary columns
-def drop_col(df):
-    df.drop(columns = "Part Number", inplace = True)
+def bolts(df):
+    df_bolts = df.loc[df["Comments"].str.lower() == "tornilleria"]
+    df_bolts = df_bolts[FINAL_COL].copy()
+    return df_bolts
