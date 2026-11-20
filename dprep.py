@@ -2,7 +2,6 @@
 # email: sgrisales@gmail.com
 
 import pandas as pd
-import numpy as np
 import sys
 import os
 
@@ -100,6 +99,8 @@ def assemblies_hierarchy(df):
     return assemblies_list
 
 def bolts(df):
+    ### Creates a df to list only the bolts
     df_bolts = df.loc[df["Comments"].str.lower() == "tornilleria"]
     df_bolts = df_bolts[FINAL_COL].copy()
+    df_bolts["Item"] = range(1, len(df) + 1)
     return df_bolts

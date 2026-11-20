@@ -1,4 +1,3 @@
-import xlsxwriter
 import pandas as pd
 import numpy as np
 
@@ -30,7 +29,7 @@ def create_workbook():
 
 
 def format(workbook):
-    ###Generates some formatting styles
+    ### Generates formatting styles
     formats = {
         "default" : workbook.add_format({
             "font_name" : "Times New Roman",
@@ -106,7 +105,7 @@ def format(workbook):
 
 
 def apply_border(workbook, worksheet, start_row, end_row, start_col, end_col):
-    ###Creates a small box to write basic information about the project and a space for the logo
+    ### Creates a small box to write basic information about the project and leaves space for the logo
     left = workbook.add_format({"left" : 2})
     right = workbook.add_format({"right" : 2})
     top = workbook.add_format({"top" : 2})
@@ -122,6 +121,7 @@ def apply_border(workbook, worksheet, start_row, end_row, start_col, end_col):
 
 
 def column_width(worksheet, width_c, width_d, width_e, width_f, width_g):
+    ### Adjust the width of the columns
     worksheet.set_column("C:C", width_c)
     worksheet.set_column("D:D", width_d)
     worksheet.set_column("E:E", width_e)
@@ -130,6 +130,7 @@ def column_width(worksheet, width_c, width_d, width_e, width_f, width_g):
 
 
 def insert_img(worksheet, cell, x_scale = 1, y_scale = 1, x_offset = 1, y_offset = 5):
+    ### inserts an image in a certain cell
     image_path = "./img/Sample company logo.png"
     worksheet.insert_image(cell, image_path, 
                            {"x_scale" : x_scale,
@@ -139,6 +140,7 @@ def insert_img(worksheet, cell, x_scale = 1, y_scale = 1, x_offset = 1, y_offset
 
 
 def type_basic_info(worksheet, formats, project, client, city):
+    ### Type the information into the xlsx
     worksheet.write("B2", "Proyeto:", formats["top left border"])
     worksheet.write("B3", "Cliente:", formats["left border"])
     worksheet.write("B4", "Ciudad:", formats["left border"])
@@ -150,6 +152,7 @@ def type_basic_info(worksheet, formats, project, client, city):
     worksheet.write("D5", None, formats["bottom right border"])
 
 def add_table(ws, start_row, start_col, df, formats, index):
+    ### This function creates the table according to the df passed, and gives format to the column headers and cells rows
     rows, cols = df.shape
     ws.add_table(start_row, start_col, start_row + rows, start_col + cols - 1,
                  {
@@ -159,13 +162,14 @@ def add_table(ws, start_row, start_col, df, formats, index):
                      "style": "None",
                      "autofilter" : False
                  })
-    df = df.replace([np.nan, np.inf, -np.inf], None)
+    df = df.replace(np.nan, None) # required due to the write_row raising an error if there is nan values 
     for row, values in enumerate(df.itertuples(index = index, name = None)):
         ws.write_row(start_row + row + 1, start_col, values, formats["cell"])
-    start_row += rows + 1
+    start_row += rows + 1 # Adjust the current row position for the next step in the main logic
     return start_row
 
 def add_main_assembly_row(ws, df, row, start_col, data, formats):
+    ### Writes the row of the assembly to wich the parts on the table are part of
     cols = df.shape[1]
     ws.merge_range(row, start_col, row, start_col+cols-1, data, formats["header_table"])
     row += 1
